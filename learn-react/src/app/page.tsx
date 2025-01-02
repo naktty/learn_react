@@ -1,58 +1,34 @@
-// import Profile from './ui/profile';
-import Avatar from './ui/avatar';
+function Drink({ name }) {
+  let partOfPlant = 'bean';
+  let caffeineContent = '80–185 mg/cup';
+  let age = '1,000+ years';
 
-// const person1 = {
-//   name: 'Maria Skłodowska-Curie',
-//   imageId: 'szV5sdG',
-//   profession: 'physicist and chemist',
-//   awards: ['Nobel Prize in Physics', 'Nobel Prize in Chemistry', 'Davy Medal', 'Matteucci Medal'],
-//   discovered: 'polonium (chemical element)'
-// }
+  if (name === 'tea') {
+    partOfPlant = 'leaf';
+    caffeineContent = '15–70 mg/cup';
+    age = '4,000+ years';
+  }
 
-// const person2 = {
-//   name: 'Katsuko Saruhashi',
-//   imageId: 'YfeOqp2',
-//   profession: 'geochemist',
-//   awards: ['Miyake Prize for geochemistry', 'Tanaka Prize'],
-//   discovered: 'a method for measuring carbon dioxide in seawate'
-// }
-
-// export default function Gallery() {
-//   return (
-//     <div>
-//       <h1>Notable Scientists</h1>
-//       <Profile person={person1} />
-//       <Profile person={person2} />
-//     </div>
-//   );
-// }
-
-function Card({ children, title }) {
   return (
-    <div className="card">
-      <div className="card-content">
-        <h1>{title}</h1>
-        {children}
-      </div>
-    </div>
+    <section>
+      <h1>{name}</h1>
+      <dl>
+        <dt>Part of plant</dt>
+        <dd>{ partOfPlant }</dd>
+        <dt>Caffeine content</dt>
+        <dd>{ caffeineContent }</dd>
+        <dt>Age</dt>
+        <dd>{ age }</dd>
+      </dl>
+    </section>
   );
 }
 
-export default function Profile() {
+export default function DrinkList() {
   return (
     <div>
-      <Card title="Photo">
-        <img
-          className="avatar"
-          src="https://i.imgur.com/OKS67lhm.jpg"
-          alt="Aklilu Lemma"
-          width={100}
-          height={100}
-        />
-      </Card>
-      <Card title="About">
-        <p>Aklilu Lemma was a distinguished Ethiopian scientist who discovered a natural treatment to schistosomiasis.</p>
-      </Card>
+      <Drink name="tea" />
+      <Drink name="coffee" />
     </div>
   );
 }
