@@ -1,7 +1,11 @@
-import Gallery from './ui/gallery';
+import Gallery from "./ui/gallery";
+import Profile from "./ui/profile";
 
 export default function App() {
   return (
-    <Gallery />
+    <>
+      <Profile />
+      <Gallery />
+    </>
   );
 }
