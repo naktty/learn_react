@@ -1,34 +1,22 @@
-function Drink({ name }) {
-  let partOfPlant = 'bean';
-  let caffeineContent = '80–185 mg/cup';
-  let age = '1,000+ years';
+import { Fragment } from 'react';
 
-  if (name === 'tea') {
-    partOfPlant = 'leaf';
-    caffeineContent = '15–70 mg/cup';
-    age = '4,000+ years';
-  }
+const poem = {
+  lines: [
+    'I write, erase, rewrite',
+    'Erase again, and then',
+    'A poppy blooms.'
+  ]
+};
 
+export default function Poem() {
   return (
-    <section>
-      <h1>{name}</h1>
-      <dl>
-        <dt>Part of plant</dt>
-        <dd>{ partOfPlant }</dd>
-        <dt>Caffeine content</dt>
-        <dd>{ caffeineContent }</dd>
-        <dt>Age</dt>
-        <dd>{ age }</dd>
-      </dl>
-    </section>
-  );
-}
-
-export default function DrinkList() {
-  return (
-    <div>
-      <Drink name="tea" />
-      <Drink name="coffee" />
-    </div>
+    <article>
+      {poem.lines.map((line, i) =>
+        <Fragment key={i}>
+          {i > 0 && <hr />}
+          <p>{line}</p>
+        </Fragment>
+      )}
+    </article>
   );
 }
