@@ -1,14 +1,13 @@
-export default function Clock({ time = new Date() }) {
-  let hours = time.getHours();
-  let className;
-  if (hours >= 0 && hours <= 6) {
-    className = 'night';
-  } else {
-    className = 'day';
+'use client';
+
+export default function Button() {
+  function handleClick() {
+    alert('You clicked me!');
   }
+
   return (
-    <h1 className={className}>
-      {time.toLocaleTimeString()}
-    </h1>
+    <button onClick={handleClick}>
+      Click me
+    </button>
   );
 }
