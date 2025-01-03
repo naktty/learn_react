@@ -1,14 +1,34 @@
 'use client';
 
-export default function Signup() {
+import { sculptureList } from './lib/data';
+
+export default function Gallery() {
+  let index = 0;
+
+  function handleClick() {
+    index = index + 1;
+  }
+
+  let sculpture = sculptureList[index];
   return (
-    <form onSubmit={e => {
-      e.preventDefault();
-      alert('Submitting!');
-    }}>
-      <input />
-      <button>Send</button>
-    </form>
+    <>
+      <button onClick={handleClick}>
+        Next
+      </button>
+      <h2>
+        <i>{sculpture.name} </i> 
+        by {sculpture.artist}
+      </h2>
+      <h3>  
+        ({index + 1} of {sculptureList.length})
+      </h3>
+      <img 
+        src={sculpture.url} 
+        alt={sculpture.alt}
+      />
+      <p>
+        {sculpture.description}
+      </p>
+    </>
   );
 }
-
