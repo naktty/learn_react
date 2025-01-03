@@ -1,14 +1,14 @@
-export default function Clock({ time = new Date() }) {
-  let hours = time.getHours();
-  let className;
-  if (hours >= 0 && hours <= 6) {
-    className = 'night';
-  } else {
-    className = 'day';
-  }
+'use client';
+
+export default function Signup() {
   return (
-    <h1 className={className}>
-      {time.toLocaleTimeString()}
-    </h1>
+    <form onSubmit={e => {
+      e.preventDefault();
+      alert('Submitting!');
+    }}>
+      <input />
+      <button>Send</button>
+    </form>
   );
 }
+
