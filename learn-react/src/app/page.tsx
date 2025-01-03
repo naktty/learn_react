@@ -1,22 +1,38 @@
 'use client';
 
-function AlertButton({ message, children }) {
+function Button({ onClick, children }) {
   return (
-    <button onClick={() => alert(message)}>
+    <button onClick={onClick}>
       {children}
     </button>
+  );
+}
+
+function PlayButton({ movieName }) {
+  function handlePlayClick() {
+    alert(`Playing ${movieName}!`);
+  }
+
+  return (
+    <Button onClick={handlePlayClick}>
+      Play "{movieName}"
+    </Button>
+  );
+}
+
+function UploadButton() {
+  return (
+    <Button onClick={() => alert('Uploading!')}>
+      Upload Image
+    </Button>
   );
 }
 
 export default function Toolbar() {
   return (
     <div>
-      <AlertButton message="Playing!">
-        Play Movie
-      </AlertButton>
-      <AlertButton message="Uploading!">
-        Upload Image
-      </AlertButton>
+      <PlayButton movieName="Kiki's Delivery Service" />
+      <UploadButton />
     </div>
   );
 }
