@@ -11,7 +11,7 @@ export default function RequestTracker() {
     await delay(3000);
     setPending(p => p - 1);
     setCompleted(c => c + 1);
-  }
+  } 
 
   return (
     <>
