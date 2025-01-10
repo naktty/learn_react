@@ -2,75 +2,70 @@
 
 import { useState } from 'react';
 
-const initialProducts = [{
-  id: 0,
-  name: 'Baklava',
-  count: 1,
-}, {
-  id: 1,
-  name: 'Cheese',
-  count: 5,
-}, {
-  id: 2,
-  name: 'Spaghetti',
-  count: 2,
-}];
+export default function Form() {
+  const [answer, setAnswer] = useState('');
+  const [error, setError] = useState(null);
+  const [status, setStatus] = useState('typing');
 
-export default function ShoppingCart() {
-  const [
-    products,
-    setProducts
-  ] = useState(initialProducts)
-
-  function handleIncreaseClick(productId) {
-    setProducts(products.map(product => {
-      if (product.id === productId) {
-        return {
-          ...product,
-          count: product.count + 1
-        };
-      } else {
-        return product;
-      }
-    }))
+  if (status === 'success') {
+    return <h1>That's right!</h1>
   }
 
-  function handleDecreaseClick(productId) {
-    let nextProducts = products.map(product => {
-      if (product.id === productId) {
-        return {
-          ...product,
-          count: product.count - 1
-        };
-      } else {
-        return product;
-      }
-    });
-    nextProducts = nextProducts.filter(p =>
-      p.count > 0
-    );
-    setProducts(nextProducts)
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setStatus('submitting');
+    try {
+      await submitForm(answer);
+      setStatus('success');
+    } catch (err) {
+      setStatus('typing');
+      setError(err);
+    }
+  }
+
+  function handleTextareaChange(e) {
+    setAnswer(e.target.value);
   }
 
   return (
-    <ul>
-      {products.map(product => (
-        <li key={product.id}>
-          {product.name}
-          {' '}
-          (<b>{product.count}</b>)
-          <button onClick={() => {
-            handleIncreaseClick(product.id);
-          }}>
-            +
-          </button>
-          <button onClick={() => {
-            handleDecreaseClick(product.id);
-          }}>
-            –
-          </button>
-        </li>
-      ))}
-    </ul>
+    <>
+      <h2>City quiz</h2>
+      <p>
+        In which city is there a billboard that turns air into drinkable water?
+      </p>
+      <form onSubmit={handleSubmit}>
+        <textarea
+          value={answer}
+          onChange={handleTextareaChange}
+          disabled={status === 'submitting'}
+        />
+        <br />
+        <button disabled={
+          answer.length === 0 ||
+          status === 'submitting'
+        }>
+          Submit
+        </button>
+        {error !== null &&
+          <p className="Error">
+            {error.message}
+          </p>
+        }
+      </form>
+    </>
   );
+}
+
+function submitForm(answer) {
+  // Pretend it's hitting the network.
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      let shouldError = answer.toLowerCase() !== 'lima'
+      if (shouldError) {
+        reject(new Error('Good guess but a wrong answer. Try again!'));
+      } else {
+        resolve();
+      }
+    }, 1500);
+  });
 }
