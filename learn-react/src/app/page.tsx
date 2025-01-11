@@ -3,46 +3,45 @@
 import { useState } from 'react';
 
 export default function EditProfile() {
-  const[mode, setMode] = useState('Browse');
-  const[firstName, setFirstName] = useState('Jane');
-  const[lastName, setLastName] = useState('Jacobs');
-  
+  const [isEditing, setIsEditing] = useState(false);
+  const [firstName, setFirstName] = useState('Jane');
+  const [lastName, setLastName] = useState('Jacobs');
+
   return (
-    <form>
+    <form onSubmit={e => {
+      e.preventDefault();
+      setIsEditing(!isEditing);
+    }}>
       <label>
         First name:{' '}
-        {mode==='Edit' ?
+        {isEditing ? (
           <input
             value={firstName}
             onChange={e => {
-              setFirstName(e.target.value);
+              setFirstName(e.target.value)
             }}
           />
-          : <b>{firstName}</b>
-        }
+        ) : (
+          <b>{firstName}</b>
+        )}
       </label>
       <label>
         Last name:{' '}
-        {mode==='Edit' ?
+        {isEditing ? (
           <input
             value={lastName}
             onChange={e => {
-              setLastName(e.target.value);
+              setLastName(e.target.value)
             }}
           />
-          : <b>{lastName}</b>
-        }
+        ) : (
+          <b>{lastName}</b>
+        )}
       </label>
-      <button
-        type="submit"
-        onClick={e => {
-          e.preventDefault();
-          mode==='Edit' ? setMode('Browse') : setMode('Edit');
-        }}
-      >
-        {mode === 'Browse' ? 'Edit Profile' : 'Save Profile'}
+      <button type="submit">
+        {isEditing ? 'Save' : 'Edit'} Profile
       </button>
-      <p><i>{`Hello, ${firstName} ${lastName}!`}</i></p>
+      <p><i>Hello, {firstName} {lastName}!</i></p>
     </form>
   );
 }
