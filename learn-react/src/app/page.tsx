@@ -2,75 +2,46 @@
 
 import { useState } from 'react';
 
-const initialProducts = [{
-  id: 0,
-  name: 'Baklava',
-  count: 1,
-}, {
-  id: 1,
-  name: 'Cheese',
-  count: 5,
-}, {
-  id: 2,
-  name: 'Spaghetti',
-  count: 2,
-}];
-
-export default function ShoppingCart() {
-  const [
-    products,
-    setProducts
-  ] = useState(initialProducts)
-
-  function handleIncreaseClick(productId) {
-    setProducts(products.map(product => {
-      if (product.id === productId) {
-        return {
-          ...product,
-          count: product.count + 1
-        };
-      } else {
-        return product;
-      }
-    }))
-  }
-
-  function handleDecreaseClick(productId) {
-    let nextProducts = products.map(product => {
-      if (product.id === productId) {
-        return {
-          ...product,
-          count: product.count - 1
-        };
-      } else {
-        return product;
-      }
-    });
-    nextProducts = nextProducts.filter(p =>
-      p.count > 0
-    );
-    setProducts(nextProducts)
-  }
+export default function EditProfile() {
+  const [isEditing, setIsEditing] = useState(false);
+  const [firstName, setFirstName] = useState('Jane');
+  const [lastName, setLastName] = useState('Jacobs');
 
   return (
-    <ul>
-      {products.map(product => (
-        <li key={product.id}>
-          {product.name}
-          {' '}
-          (<b>{product.count}</b>)
-          <button onClick={() => {
-            handleIncreaseClick(product.id);
-          }}>
-            +
-          </button>
-          <button onClick={() => {
-            handleDecreaseClick(product.id);
-          }}>
-            –
-          </button>
-        </li>
-      ))}
-    </ul>
+    <form onSubmit={e => {
+      e.preventDefault();
+      setIsEditing(!isEditing);
+    }}>
+      <label>
+        First name:{' '}
+        {isEditing ? (
+          <input
+            value={firstName}
+            onChange={e => {
+              setFirstName(e.target.value)
+            }}
+          />
+        ) : (
+          <b>{firstName}</b>
+        )}
+      </label>
+      <label>
+        Last name:{' '}
+        {isEditing ? (
+          <input
+            value={lastName}
+            onChange={e => {
+              setLastName(e.target.value)
+            }}
+          />
+        ) : (
+          <b>{lastName}</b>
+        )}
+      </label>
+      <button type="submit">
+        {isEditing ? 'Save' : 'Edit'} Profile
+      </button>
+      <p><i>Hello, {firstName} {lastName}!</i></p>
+    </form>
   );
 }
