@@ -1,48 +1,32 @@
 'use client';
 
 import { useState } from 'react';
-import { letters } from './data.js';
-import Letter from './Letter.js';
 
-export default function MailClient() {
-  const [selectedIds, setSelectedIds] = useState([]);
+export default function SyncedInputs() {
+  const [text, setText] = useState('');
+  return (
+    <>
+      <Input label="First input" value={text} onChange={setText} />
+      <Input label="Second input" value={text} onChange={setText} />
+    </>
+  );
+}
 
-  const selectedCount = selectedIds.length;
+function Input({ label, text, onChange }) {
+  // const [text, setText] = useState('');
 
-  function handleToggle(toggledId) {
-    // TODO: allow multiple selection
-    if (selectedIds.includes(toggledId)) {
-      setSelectedIds(selectedIds.filter(id =>
-        id !== toggledId
-      ));
-    } else {
-      setSelectedIds(
-        [...selectedIds, toggledId]
-      );
-    }
+  function handleChange(e) {
+    onChange(e.target.value);
   }
 
   return (
-    <>
-      <h2>Inbox</h2>
-      <ul>
-        {letters.map(letter => (
-          <Letter
-            key={letter.id}
-            letter={letter}
-            isSelected={
-              selectedIds.includes(letter.id)
-            }
-            onToggle={handleToggle}
-          />
-        ))}
-        <hr />
-        <p>
-          <b>
-            You selected {selectedCount} letters
-          </b>
-        </p>
-      </ul>
-    </>
+    <label>
+      {label}
+      {' '}
+      <input
+        value={text}
+        onChange={handleChange}
+      />
+    </label>
   );
 }
