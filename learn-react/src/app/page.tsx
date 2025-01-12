@@ -1,61 +1,48 @@
 'use client';
 
 import { useState } from 'react';
-import AddItem from './AddItem.js';
-import PackingList from './PackingList.js';
+import { letters } from './data.js';
+import Letter from './Letter.js';
 
-let nextId = 3;
-const initialItems = [
-  { id: 0, title: 'Warm socks', packed: true },
-  { id: 1, title: 'Travel journal', packed: false },
-  { id: 2, title: 'Watercolors', packed: false },
-];
+export default function MailClient() {
+  const [selectedIds, setSelectedIds] = useState([]);
 
-export default function TravelPlan() {
-  const [items, setItems] = useState(initialItems);
-  const packed = items.filter(item =>
-    item.packed === true
-  );
+  const selectedCount = selectedIds.length;
 
-  function handleAddItem(title) {
-    setItems([
-      ...items,
-      {
-        id: nextId++,
-        title: title,
-        packed: false
-      }
-    ]);
-  }
-
-  function handleChangeItem(nextItem) {
-    setItems(items.map(item => {
-      if (item.id === nextItem.id) {
-        return nextItem;
-      } else {
-        return item;
-      }
-    }));
-  }
-
-  function handleDeleteItem(itemId) {
-    setItems(
-      items.filter(item => item.id !== itemId)
-    );
+  function handleToggle(toggledId) {
+    // TODO: allow multiple selection
+    if (selectedIds.includes(toggledId)) {
+      setSelectedIds(selectedIds.filter(id =>
+        id !== toggledId
+      ));
+    } else {
+      setSelectedIds(
+        [...selectedIds, toggledId]
+      );
+    }
   }
 
   return (
-    <>  
-      <AddItem
-        onAddItem={handleAddItem}
-      />
-      <PackingList
-        items={items}
-        onChangeItem={handleChangeItem}
-        onDeleteItem={handleDeleteItem}
-      />
-      <hr />
-      <b>{packed.length} out of {items.length} packed!</b>
+    <>
+      <h2>Inbox</h2>
+      <ul>
+        {letters.map(letter => (
+          <Letter
+            key={letter.id}
+            letter={letter}
+            isSelected={
+              selectedIds.includes(letter.id)
+            }
+            onToggle={handleToggle}
+          />
+        ))}
+        <hr />
+        <p>
+          <b>
+            You selected {selectedCount} letters
+          </b>
+        </p>
+      </ul>
     </>
   );
 }
