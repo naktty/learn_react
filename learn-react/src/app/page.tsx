@@ -1,48 +1,48 @@
 'use client';
 
 import { useState } from 'react';
-import { letters } from './data.js';
-import Letter from './Letter.js';
+import { foods, filterItems } from './data.js';
 
-export default function MailClient() {
-  const [selectedIds, setSelectedIds] = useState([]);
-
-  const selectedCount = selectedIds.length;
-
-  function handleToggle(toggledId) {
-    // TODO: allow multiple selection
-    if (selectedIds.includes(toggledId)) {
-      setSelectedIds(selectedIds.filter(id =>
-        id !== toggledId
-      ));
-    } else {
-      setSelectedIds(
-        [...selectedIds, toggledId]
-      );
-    }
+export default function FilterableList() {
+  const [query, setQuery] = useState('');
+  const filteredFoods = filterItems(foods, query);
+  
+  function handleChange(e) {
+    setQuery(e.target.value);
   }
-
+  
   return (
     <>
-      <h2>Inbox</h2>
-      <ul>
-        {letters.map(letter => (
-          <Letter
-            key={letter.id}
-            letter={letter}
-            isSelected={
-              selectedIds.includes(letter.id)
-            }
-            onToggle={handleToggle}
-          />
-        ))}
-        <hr />
-        <p>
-          <b>
-            You selected {selectedCount} letters
-          </b>
-        </p>
-      </ul>
+      <SearchBar query={query} onChange={handleChange} />
+      <hr />
+      <List items={filteredFoods} />
     </>
+  );
+}
+
+function SearchBar({query, onChange}) {
+  return (
+    <label>
+      Search:{' '}
+      <input
+        value={query}
+        onChange={onChange}
+      />
+    </label>
+  );
+}
+
+function List({ items }) {
+  return (
+    <table>
+      <tbody>
+        {items.map(food => (
+          <tr key={food.id}>
+            <td>{food.name}</td>
+            <td>{food.description}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   );
 }
