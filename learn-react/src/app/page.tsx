@@ -1,47 +1,48 @@
 'use client';
 
 import { useState } from 'react';
+import { letters } from './data.js';
+import Letter from './Letter.js';
 
-export default function EditProfile() {
-  const [isEditing, setIsEditing] = useState(false);
-  const [firstName, setFirstName] = useState('Jane');
-  const [lastName, setLastName] = useState('Jacobs');
+export default function MailClient() {
+  const [selectedIds, setSelectedIds] = useState([]);
+
+  const selectedCount = selectedIds.length;
+
+  function handleToggle(toggledId) {
+    // TODO: allow multiple selection
+    if (selectedIds.includes(toggledId)) {
+      setSelectedIds(selectedIds.filter(id =>
+        id !== toggledId
+      ));
+    } else {
+      setSelectedIds(
+        [...selectedIds, toggledId]
+      );
+    }
+  }
 
   return (
-    <form onSubmit={e => {
-      e.preventDefault();
-      setIsEditing(!isEditing);
-    }}>
-      <label>
-        First name:{' '}
-        {isEditing ? (
-          <input
-            value={firstName}
-            onChange={e => {
-              setFirstName(e.target.value)
-            }}
+    <>
+      <h2>Inbox</h2>
+      <ul>
+        {letters.map(letter => (
+          <Letter
+            key={letter.id}
+            letter={letter}
+            isSelected={
+              selectedIds.includes(letter.id)
+            }
+            onToggle={handleToggle}
           />
-        ) : (
-          <b>{firstName}</b>
-        )}
-      </label>
-      <label>
-        Last name:{' '}
-        {isEditing ? (
-          <input
-            value={lastName}
-            onChange={e => {
-              setLastName(e.target.value)
-            }}
-          />
-        ) : (
-          <b>{lastName}</b>
-        )}
-      </label>
-      <button type="submit">
-        {isEditing ? 'Save' : 'Edit'} Profile
-      </button>
-      <p><i>Hello, {firstName} {lastName}!</i></p>
-    </form>
+        ))}
+        <hr />
+        <p>
+          <b>
+            You selected {selectedCount} letters
+          </b>
+        </p>
+      </ul>
+    </>
   );
 }
