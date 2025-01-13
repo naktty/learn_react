@@ -1,25 +1,32 @@
-import logo from './logo.svg';
 import './App.css';
+import './preserving-and-resetting-state/challenges1.css';
 
-function App() {
+import { useState } from 'react';
+
+export default function App() {
+  const [showHint, setShowHint] = useState(false);
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {showHint && <p><i>Hint: Your favorite city?</i></p>}
+      <Form />
+      {showHint
+      ? <button onClick={() => {
+        setShowHint(false);
+      }}>Hide hint</button>
+      : <button onClick={() => {
+        setShowHint(true);
+      }}>Show hint</button>}
     </div>
   );
 }
 
-export default App;
+function Form() {
+  const [text, setText] = useState('');
+  return (
+    <textarea
+      value={text}
+      onChange={e => setText(e.target.value)}
+    />
+  );
+}
