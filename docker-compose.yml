@@ -1,10 +1,13 @@
 services:
   app:
-    image: node:22.7.0
-    container_name: learn_react_app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: learn_react
     working_dir: /app
     volumes:
       - .:/app
+      - /app/node_modules
     ports:
       - "3000:3000"
     tty: true
