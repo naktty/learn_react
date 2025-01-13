@@ -1,35 +1,50 @@
 import './App.css';
-import './preserving-and-resetting-state/challenges1.css';
+import './preserving-and-resetting-state/challenges2.css';
 
 import { useState } from 'react';
 
 export default function App() {
-  const [showHint, setShowHint] = useState(false);
-  return (
-    <div>
-      {showHint &&
-        <p><i>Hint: Your favorite city?</i></p>
-      }
-      <Form />
-      {showHint ? (
-        <button onClick={() => {
-          setShowHint(false);
-        }}>Hide hint</button>
-      ) : (
-        <button onClick={() => {
-          setShowHint(true);
-        }}>Show hint</button>
-      )}
-    </div>
+  const [reverse, setReverse] = useState(false);
+  let checkbox = (
+    <label>
+      <input
+        type="checkbox"
+        checked={reverse}
+        onChange={e => setReverse(e.target.checked)}
+      />
+      Reverse order
+    </label>
   );
+  if (reverse) {
+    return (
+      <>
+        <Field label="Last name" key='lastName' /> 
+        <Field label="First name" key='firstName' />
+        {checkbox}
+      </>
+    );
+  } else {
+    return (
+      <>
+        <Field label="First name" key='firstName' /> 
+        <Field label="Last name" key='lastName' />
+        {checkbox}
+      </>
+    );    
+  }
 }
 
-function Form() {
+function Field({ label }) {
   const [text, setText] = useState('');
   return (
-    <textarea
-      value={text}
-      onChange={e => setText(e.target.value)}
-    />
+    <label>
+      {label}:{' '}
+      <input
+        type="text"
+        value={text}
+        placeholder={label}
+        onChange={e => setText(e.target.value)}
+      />
+    </label>
   );
 }
