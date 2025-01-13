@@ -18,26 +18,13 @@ export default function Gallery() {
   let image = images[index];
   return (
     <>
-      <Image
-        key={index}
-        image={image}
-        index={index}
-        onClick={handleClick}
-      />
-    </>
-  );
-}
-
-export function Image({image, index, onClick}) {
-  return (
-    <>
-      <button onClick={onClick}>
+      <button onClick={handleClick}>
         Next
       </button>
       <h3>
         Image {index + 1} of {images.length}
       </h3>
-      <img src={image.src} />
+      <img key={image.src} src={image.src} />
       <p>
         {image.place}
       </p>
