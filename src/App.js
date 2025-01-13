@@ -1,50 +1,69 @@
 import './App.css';
-import './preserving-and-resetting-state/challenges2.css';
+import './preserving-and-resetting-state/challenges4.css';
 
 import { useState } from 'react';
 
-export default function App() {
-  const [reverse, setReverse] = useState(false);
-  let checkbox = (
-    <label>
-      <input
-        type="checkbox"
-        checked={reverse}
-        onChange={e => setReverse(e.target.checked)}
-      />
-      Reverse order
-    </label>
-  );
-  if (reverse) {
-    return (
-      <>
-        <Field label="Last name" key='lastName' /> 
-        <Field label="First name" key='firstName' />
-        {checkbox}
-      </>
-    );
-  } else {
-    return (
-      <>
-        <Field label="First name" key='firstName' /> 
-        <Field label="Last name" key='lastName' />
-        {checkbox}
-      </>
-    );    
+export default function Gallery() {
+  const [index, setIndex] = useState(0);
+  const hasNext = index < images.length - 1;
+
+  function handleClick() {
+    if (hasNext) {
+      setIndex(index + 1);
+    } else {
+      setIndex(0);
+    }
   }
+
+  let image = images[index];
+  return (
+    <>
+      <Image
+        key={index}
+        image={image}
+        index={index}
+        onClick={handleClick}
+      />
+    </>
+  );
 }
 
-function Field({ label }) {
-  const [text, setText] = useState('');
+export function Image({image, index, onClick}) {
   return (
-    <label>
-      {label}:{' '}
-      <input
-        type="text"
-        value={text}
-        placeholder={label}
-        onChange={e => setText(e.target.value)}
-      />
-    </label>
+    <>
+      <button onClick={onClick}>
+        Next
+      </button>
+      <h3>
+        Image {index + 1} of {images.length}
+      </h3>
+      <img src={image.src} />
+      <p>
+        {image.place}
+      </p>
+    </>
   );
 }
+
+let images = [{
+  place: 'Penang, Malaysia',
+  src: 'https://i.imgur.com/FJeJR8M.jpg'
+}, {
+  place: 'Lisbon, Portugal',
+  src: 'https://i.imgur.com/dB2LRbj.jpg'
+}, {
+  place: 'Bilbao, Spain',
+  src: 'https://i.imgur.com/z08o2TS.jpg'
+}, {
+  place: 'Valparaíso, Chile',
+  src: 'https://i.imgur.com/Y3utgTi.jpg'
+}, {
+  place: 'Schwyz, Switzerland',
+  src: 'https://i.imgur.com/JBbMpWY.jpg'
+}, {
+  place: 'Prague, Czechia',
+  src: 'https://i.imgur.com/QwUKKmF.jpg'
+}, {
+  place: 'Ljubljana, Slovenia',
+  src: 'https://i.imgur.com/3aIiwfm.jpg'
+}];
