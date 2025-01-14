@@ -1,6 +1,10 @@
 export const initialState = {
   selectedId: 0,
-  messages: ['Hello', '', '']
+  messages: {
+    0: 'Hello, Taylor',
+    1: 'Hello, Alice',
+    2: 'Hello, Bob',
+  },
 };
 
 export function messengerReducer(state, action) {
@@ -14,25 +18,19 @@ export function messengerReducer(state, action) {
     case 'edited_message': {
       return {
         ...state,
-        messages: state.messages.map((m, index) => {
-          if(index === action.contactId){
-            return action.message;
-          } else {
-            return m;
-          }
-        })
+        messages: {
+          ...state.messages,
+          [state.selectedId]: action.message,
+        },
       };
     }
     case 'sent_message': {
       return {
         ...state,
-        messages: state.messages.map((m, index) => {
-          if(index === action.contactId){
-            return '';
-          } else {
-            return m;
-          }
-        })
+        messages: {
+          ...state.messages,
+          [state.selectedId]: '',
+        },
       };
     }
     default: {

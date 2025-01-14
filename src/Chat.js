@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 export default function Chat({contact, message, dispatch}) {
   return (
     <section className="chat">
@@ -10,7 +8,6 @@ export default function Chat({contact, message, dispatch}) {
           dispatch({
             type: 'edited_message',
             message: e.target.value,
-            contactId: contact.id,
           });
         }}
       />
@@ -20,7 +17,6 @@ export default function Chat({contact, message, dispatch}) {
           alert(`Sending "${message}" to ${contact.email}`);
           dispatch({
             type: 'sent_message',
-            contactId: contact.id,
           });
         }}>
         Send to {contact.email}
