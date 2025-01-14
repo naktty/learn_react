@@ -1,56 +1,34 @@
 import './App.css';
-import './preserving-and-resetting-state/challenges4.css';
+import './extracting-state-logic-into-a-reducer/challenges3.css';
 
-import { useState } from 'react';
+import { useReducer } from 'react';
+import Chat from './Chat.js';
+import ContactList from './ContactList.js';
+import { initialState, messengerReducer } from './messengerReducer';
 
-export default function Gallery() {
-  const [index, setIndex] = useState(0);
-  const hasNext = index < images.length - 1;
-
-  function handleClick() {
-    if (hasNext) {
-      setIndex(index + 1);
-    } else {
-      setIndex(0);
-    }
-  }
-
-  let image = images[index];
+export default function Messenger() {
+  const [state, dispatch] = useReducer(messengerReducer, initialState);
+  const message = state.messages[state.selectedId];
+  const contact = contacts.find((c) => c.id === state.selectedId);
   return (
-    <>
-      <button onClick={handleClick}>
-        Next
-      </button>
-      <h3>
-        Image {index + 1} of {images.length}
-      </h3>
-      <img key={image.src} src={image.src} />
-      <p>
-        {image.place}
-      </p>
-    </>
+    <div>
+      <ContactList
+        contacts={contacts}
+        selectedId={state.selectedId}
+        dispatch={dispatch}
+      />
+      <Chat
+        key={contact.id}
+        message={message}
+        contact={contact}
+        dispatch={dispatch}
+      />
+    </div>
   );
 }
 
-let images = [{
-  place: 'Penang, Malaysia',
-  src: 'https://i.imgur.com/FJeJR8M.jpg'
-}, {
-  place: 'Lisbon, Portugal',
-  src: 'https://i.imgur.com/dB2LRbj.jpg'
-}, {
-  place: 'Bilbao, Spain',
-  src: 'https://i.imgur.com/z08o2TS.jpg'
-}, {
-  place: 'Valparaíso, Chile',
-  src: 'https://i.imgur.com/Y3utgTi.jpg'
-}, {
-  place: 'Schwyz, Switzerland',
-  src: 'https://i.imgur.com/JBbMpWY.jpg'
-}, {
-  place: 'Prague, Czechia',
-  src: 'https://i.imgur.com/QwUKKmF.jpg'
-}, {
-  place: 'Ljubljana, Slovenia',
-  src: 'https://i.imgur.com/3aIiwfm.jpg'
-}];
+const contacts = [
+  {id: 0, name: 'Taylor', email: 'taylor@mail.com'},
+  {id: 1, name: 'Alice', email: 'alice@mail.com'},
+  {id: 2, name: 'Bob', email: 'bob@mail.com'},
+];
