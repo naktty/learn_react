@@ -1,34 +1,43 @@
 import './App.css';
-import './extracting-state-logic-into-a-reducer/challenges3.css';
 
-import { useReducer } from 'react';
-import Chat from './Chat.js';
-import ContactList from './ContactList.js';
-import { initialState, messengerReducer } from './messengerReducer';
+import { useState, useRef } from 'react';
 
-export default function Messenger() {
-  const [state, dispatch] = useReducer(messengerReducer, initialState);
-  const message = state.messages[state.selectedId];
-  const contact = contacts.find((c) => c.id === state.selectedId);
+export default function Chat() {
+  const [text, setText] = useState('');
+  const [isSending, setIsSending] = useState(false);
+  let refTimeoutID = useRef(null);
+
+  function handleSend() {
+    setIsSending(true);
+    
+    refTimeoutID = setTimeout(() => {
+      alert('Sent!');
+      setIsSending(false);
+    }, 3000);
+  }
+
+  function handleUndo() {
+    setIsSending(false);
+    clearTimeout(refTimeoutID);
+  }
+
   return (
-    <div>
-      <ContactList
-        contacts={contacts}
-        selectedId={state.selectedId}
-        dispatch={dispatch}
+    <>
+      <input
+        disabled={isSending}
+        value={text}
+        onChange={e => setText(e.target.value)}
       />
-      <Chat
-        key={contact.id}
-        message={message}
-        contact={contact}
-        dispatch={dispatch}
-      />
-    </div>
+      <button
+        disabled={isSending}
+        onClick={handleSend}>
+        {isSending ? 'Sending...' : 'Send'}
+      </button>
+      {isSending &&
+        <button onClick={handleUndo}>
+          Undo
+        </button>
+      }
+    </>
   );
 }
-
-const contacts = [
-  {id: 0, name: 'Taylor', email: 'taylor@mail.com'},
-  {id: 1, name: 'Alice', email: 'alice@mail.com'},
-  {id: 2, name: 'Bob', email: 'bob@mail.com'},
-];
