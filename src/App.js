@@ -5,12 +5,11 @@ import { useState, useRef } from 'react';
 export default function Chat() {
   const [text, setText] = useState('');
   const [isSending, setIsSending] = useState(false);
-  let refTimeoutID = useRef(null);
+  const timeoutRef = useRef(null);
 
   function handleSend() {
     setIsSending(true);
-    
-    refTimeoutID = setTimeout(() => {
+    timeoutRef.current = setTimeout(() => {
       alert('Sent!');
       setIsSending(false);
     }, 3000);
@@ -18,7 +17,7 @@ export default function Chat() {
 
   function handleUndo() {
     setIsSending(false);
-    clearTimeout(refTimeoutID);
+    clearTimeout(timeoutRef.current);
   }
 
   return (
