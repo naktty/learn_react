@@ -1,34 +1,39 @@
 import './App.css';
-import './extracting-state-logic-into-a-reducer/challenges3.css';
+import './referencing-values-with-refs/challenges3.css';
+import { useRef } from 'react';
 
-import { useReducer } from 'react';
-import Chat from './Chat.js';
-import ContactList from './ContactList.js';
-import { initialState, messengerReducer } from './messengerReducer';
-
-export default function Messenger() {
-  const [state, dispatch] = useReducer(messengerReducer, initialState);
-  const message = state.messages[state.selectedId];
-  const contact = contacts.find((c) => c.id === state.selectedId);
+function DebouncedButton({ onClick, children }) {
+  const timeoutRef = useRef(null);
   return (
-    <div>
-      <ContactList
-        contacts={contacts}
-        selectedId={state.selectedId}
-        dispatch={dispatch}
-      />
-      <Chat
-        key={contact.id}
-        message={message}
-        contact={contact}
-        dispatch={dispatch}
-      />
-    </div>
+    <button onClick={() => {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => {
+        onClick();
+      }, 1000);
+    }}>
+      {children}
+    </button>
   );
 }
 
-const contacts = [
-  {id: 0, name: 'Taylor', email: 'taylor@mail.com'},
-  {id: 1, name: 'Alice', email: 'alice@mail.com'},
-  {id: 2, name: 'Bob', email: 'bob@mail.com'},
-];
+export default function Dashboard() {
+  return (
+    <>
+      <DebouncedButton
+        onClick={() => alert('Spaceship launched!')}
+      >
+        Launch the spaceship
+      </DebouncedButton>
+      <DebouncedButton
+        onClick={() => alert('Soup boiled!')}
+      >
+        Boil the soup
+      </DebouncedButton>
+      <DebouncedButton
+        onClick={() => alert('Lullaby sung!')}
+      >
+        Sing a lullaby
+      </DebouncedButton>
+    </>
+  )
+}
