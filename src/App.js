@@ -3,12 +3,11 @@ import './referencing-values-with-refs/challenges3.css';
 import { useRef } from 'react';
 
 function DebouncedButton({ onClick, children }) {
-  let timeoutID = useRef(null);
-  
+  const timeoutRef = useRef(null);
   return (
     <button onClick={() => {
-      clearTimeout(timeoutID);
-      timeoutID = setTimeout(() => {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => {
         onClick();
       }, 1000);
     }}>
