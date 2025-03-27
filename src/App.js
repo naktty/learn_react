@@ -1,39 +1,28 @@
 import './App.css';
 import './referencing-values-with-refs/challenges3.css';
-import { useRef } from 'react';
+import { useState, useRef } from 'react';
 
-function DebouncedButton({ onClick, children }) {
-  const timeoutRef = useRef(null);
-  return (
-    <button onClick={() => {
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = setTimeout(() => {
-        onClick();
-      }, 1000);
-    }}>
-      {children}
-    </button>
-  );
-}
+export default function Chat() {
+  const [text, setText] = useState('');
+  let alertText = useRef('');
+  alertText.current = text;
 
-export default function Dashboard() {
+  function handleSend() {
+    setTimeout(() => {
+      alert('Sending: ' + alertText.current);
+    }, 3000);
+  }
+
   return (
     <>
-      <DebouncedButton
-        onClick={() => alert('Spaceship launched!')}
-      >
-        Launch the spaceship
-      </DebouncedButton>
-      <DebouncedButton
-        onClick={() => alert('Soup boiled!')}
-      >
-        Boil the soup
-      </DebouncedButton>
-      <DebouncedButton
-        onClick={() => alert('Lullaby sung!')}
-      >
-        Sing a lullaby
-      </DebouncedButton>
+      <input
+        value={text}
+        onChange={e => setText(e.target.value)}
+      />
+      <button
+        onClick={handleSend}>
+        Send
+      </button>
     </>
-  )
+  );
 }
