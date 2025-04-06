@@ -1,32 +1,63 @@
 import './App.css';
-import './referencing-values-with-refs/challenges3.css';
-import { useState, useRef } from 'react';
+import './manipulating-the-dom-with-refs/challenges3.css';
+import { useRef, useState } from 'react';
+import { flushSync } from 'react-dom';
 
-export default function Chat() {
-  const [text, setText] = useState('');
-  const textRef = useRef(text);
-
-  function handleChange(e) {
-    setText(e.target.value);
-    textRef.current = e.target.value;
-  }
-
-  function handleSend() {
-    setTimeout(() => {
-      alert('Sending: ' + textRef.current);
-    }, 3000);
-  }
+export default function CatFriends() {
+  const selectedRef = useRef(null);
+  const [index, setIndex] = useState(0);
 
   return (
     <>
-      <input
-        value={text}
-        onChange={handleChange}
-      />
-      <button
-        onClick={handleSend}>
-        Send
-      </button>
+      <nav>
+        <button onClick={() => {
+          flushSync(() => {
+            if (index < catList.length - 1) {
+              setIndex(index + 1);
+            } else {
+              setIndex(0);
+            }
+          });
+          selectedRef.current.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest',
+            inline: 'center'
+          });
+        }}>
+          Next
+        </button>
+      </nav>
+      <div>
+        <ul>
+          {catList.map((cat, i) => (
+            <li
+              key={cat.id}
+              ref={index === i ?
+                selectedRef :
+                null
+              }
+            >
+              <img
+                className={
+                  index === i ?
+                    'active'
+                    : ''
+                }
+                src={cat.imageUrl}
+                alt={'Cat #' + cat.id}
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
     </>
   );
+}
+
+const catList = [];
+for (let i = 0; i < 10; i++) {
+  catList.push({
+    id: i,
+    imageUrl: 'https://loremflickr.com/250/200/cat?lock=' + i
+  });
 }
