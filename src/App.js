@@ -3,18 +3,18 @@ import './referencing-values-with-refs/challenges3.css';
 import { useRef } from 'react';
 
 export default function Page() {
-  const ref = useRef(null);
-
-  function handleClick() {
-    ref.current.focus();
-  }
-
+  const inputRef = useRef(null);
   return (
-    <>  
+    <>
       <nav>
-        <button onClick={handleClick}>Search</button>
+        <button onClick={() => {
+          inputRef.current.focus();
+        }}>
+          Search
+        </button>
       </nav>
-      <input ref={ref}
+      <input
+        ref={inputRef}
         placeholder="Looking for something?"
       />
     </>
