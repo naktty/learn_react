@@ -2,13 +2,13 @@ import './App.css';
 import './manipulating-the-dom-with-refs/challenges3.css';
 import { useEffect, useRef } from 'react';
 
-export default function MyInput({ value, onChange }) {
+export default function MyInput({ shouldFocus, value, onChange }) {
   const ref = useRef(null);
 
+  // TODO: call focus() only if shouldFocus is true.
   useEffect(() => {
-    ref.current.focus()
-  }, []);
-  
+    shouldFocus && ref.current.focus();
+  }, [shouldFocus]);
 
   return (
     <input
